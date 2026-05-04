@@ -1,79 +1,54 @@
-# 梅花易数解读系统
+# 梅花易数 AI Skill
 
-> 八卦取象、体用生克、卦象推演 — Claude Code Agent / Hermes Skill
+一套完整的梅花易数（含梅花新易）断卦流程，设计用于 AI agent 的 skill 系统。
 
-## 这是什么
-
-这是给 **AI Agent 使用的系统配置**（skill / agent prompt），不是独立应用程序。
-
-可以直接作为：
-- **Claude Code** 的 agent 配置（放入 `.claude/agents/` 目录）
-- **Hermes** 的 skill（放入 `~/.hermes/skills/` 目录）
-- 其他兼容 OpenAI tool-calling 的 AI 工具的 system prompt
-
-加载后，AI 会按照梅花易数方法论进行完整的卦象解读：定体用 → 五行生克 → 取象推演 → 之卦趋势 → 爻辞指引 → 季节旺衰校准。
-
-## 配套工具
-
-本系统的 `yijing_draw.py` 可以配合 [SpiritTool](https://github.com/Kico-Tachagemofet/Project-Hermes) 桌面应用使用，也可以直接命令行调用。
-
-## 使用方式
-
-### 作为 Claude Code Agent
-
-将 `meihua-yishu.md` 放入项目的 `.claude/agents/` 目录：
-
-```yaml
-# .claude/agents/meihua-yishu.md
----
-name: meihua-yishu
-description: "梅花易数解读 — 八卦取象、体用生克、卦象推演"
-model: opus
----
-# ... 文档其余内容
-```
-
-### 作为 Hermes Skill
-
-```bash
-cp meihua-yishu.md ~/.hermes/skills/divination/
-```
-
-调用方式：在聊天中提及易经占卜需求，Hermes 会自动加载此 skill。
-
-### 脚本使用
-
-```bash
-# 易经起卦
-python3 scripts/yijing_draw.py
-```
-
-输出：本卦、变爻、之卦。仅使用 Python 标准库，无外部依赖。
-
-## 项目结构
+## 文件结构
 
 ```
 meihua-yishu/
-├── meihua-yishu.md     # Agent / Skill 系统文档
+├── SKILL.md                              # 主 skill：七步硬流程
+├── references/
+│   ├── meihua-yishu.md                   # 八卦取象表、五行旺衰、六十四卦速查、应期断法
+│   └── meihua-xinyi-method.md            # 《梅花新易》方法论：万物起卦、一卦多断、外应比拟
 ├── scripts/
-│   └── yijing_draw.py  # 易经起卦脚本
+│   └── yijing_draw.py                    # 易经起卦脚本（Python 标准库，零依赖）
 └── README.md
 ```
 
-## 解读框架
+## 使用方式
 
-1. **定体用** — 变爻在下卦则下为用上为体
-2. **五行生克** — 用生体大吉，体用比和吉，用克体凶
-3. **取象推演** — 上下卦物象在同一画面中互动
-4. **之卦趋势** — 新的体用关系揭示未来格局
-5. **爻辞指引** — 变爻爻辞是最直接的信息
-6. **季节旺衰** — 校准力量对比
+### 作为 AI Agent Skill
 
-文档包含：八卦取象表（乾兑离震巽坎艮坤）、六十四卦速查、五行生克、季节旺衰、应期断法、驿马桃花。
+将此目录放入你的 AI agent 的 skills 路径中。触发条件：用户提出梅花易数/易经断卦请求。
 
-## 依赖
+可用于：
+- **Claude Code** agent
+- **Hermes** skill 系统
+- 其他兼容 tool-calling 的 AI 工具
 
-Python 3.10+，仅使用标准库。
+### 起卦脚本
+
+```bash
+python3 scripts/yijing_draw.py
+```
+
+输出：随机数、本卦、之卦、变爻位置。仅使用 Python 标准库，无外部依赖。也可用「万物起卦入口表」中的手动方法（时分、报数、字画、外应等）。
+
+### 配套工具
+
+`yijing_draw.py` 可配合 [SpiritTool](https://github.com/Kico-Tachagemofet/Project-Hermes) 桌面应用使用。
+
+## 断卦流程
+
+1. **问题结构分析** — 明确问题域、求测主体、颗粒度
+2. **起卦** — 脚本或手动入口
+3. **排主互变 + 定体用** — 动爻定位体用
+4. **八卦象意速查** — 14 范畴完整列出
+5. **取象表** — AI 选择 + 画面互动
+6. **体用生克 + 旺衰 + 主互变三段**
+7. **直读 / 外应 / 比拟 + 自检 + 整合**
+
+每次断卦走完整七步。输出前强制三步自检（五行归属、体用判定、卦德验证）。
 
 ## License
 
