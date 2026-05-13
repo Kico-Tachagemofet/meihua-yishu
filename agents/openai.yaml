@@ -1,0 +1,4 @@
+interface:
+  display_name: "梅花易数"
+  short_description: "默认深度断卦：起卦、八卦象意速查、取象表、体用生克、主互变三段、旺衰、外应、直读、自检。"
+  default_prompt: "Use $meihua-yishu to create or interpret a Mei Hua Yi Shu / 梅花易数 reading."
